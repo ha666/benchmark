@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package arith;
+option go_package = ".;arith";
+
+service Arith {
+
+  rpc Mul (Args) returns (Reply) {
+
+  }
+
+}
+
+message Args {
+  int32 a = 1;
+  int32 b = 2;
+}
+
+message Reply {
+  int32 c = 1;
+}

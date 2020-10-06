@@ -15,3 +15,5 @@
 # vendor/
 .idea/
 rpcx/rpcx-client/rpcx-client
+go-micro/micro-client/micro-client
+go-micro/micro-server/micro-server
