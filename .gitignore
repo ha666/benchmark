@@ -17,3 +17,5 @@
 rpcx/rpcx-client/rpcx-client
 go-micro/micro-client/micro-client
 go-micro/micro-server/micro-server
+rpcx-pb/rpcx-pb-client/rpcx-pb-client
+rpcx-pb/rpcx-pb-server/rpcx-pb-server
