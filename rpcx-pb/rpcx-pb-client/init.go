@@ -4,7 +4,13 @@ import (
 	"context"
 	"github.com/ha666/benchmark/rpcx-pb/helloworld"
 	"github.com/ha666/logs"
+	"github.com/smallnest/rpcx/client"
 	"runtime"
+)
+
+const (
+	basePath = "/rpcx_pb_test"
+	etcdAddr = "localhost:2379"
 )
 
 func init() {
@@ -28,13 +34,19 @@ func initConcurrency() {
 
 func initClients() {
 	clients = make(map[int]*helloworld.GreeterClient, concurrency)
+	d := client.NewEtcdV3Discovery(basePath, "Greeter", []string{etcdAddr}, nil)
 	for i := 0; i < concurrency; i++ {
 		args := &helloworld.HelloRequest{
 			A: int32(i),
 			B: int32(i),
 		}
-		xclient := helloworld.NewXClientForGreeter("127.0.0.1:9972")
-		clients[i] = helloworld.NewGreeterClient(xclient)
+		clients[i] = helloworld.NewGreeterClient(
+			client.NewXClient(
+				"Greeter",
+				client.Failfast,
+				client.RoundRobin,
+				d,
+				client.DefaultOption))
 		reply, err := clients[i].SayHello(context.Background(), args)
 		if err != nil {
 			logs.Emergency("failed to call: %v", err)
